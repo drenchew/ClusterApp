@@ -19,4 +19,33 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Needle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ClusterApp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Cluster.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Speedometer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rpms.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FuelGauge.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OilTemperatureGauge.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WaterTempGauge.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseGauge.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>

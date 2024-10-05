@@ -5,10 +5,17 @@
 #include <SDL_image.h>
 #include <thread>
 
+#include "ClusterApp.h"
+
 using namespace std::chrono_literals;
 
 int main(int argc, char* argv[]) {
     // Initialize SDL
+
+    //ClusterApp app;
+
+
+
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
         return -1;
@@ -53,8 +60,11 @@ int main(int argc, char* argv[]) {
 
     // Define the center of rotation for the needle
     SDL_Point needleCenter;
-    needleCenter.x = rpmNeedle.w / 2;  // Center horizontally
-    needleCenter.y = rpmNeedle.h;       // Set to the bottom of the needle (height)
+
+    int crpmX = -(39); // -40 
+    int crpmY = 45; // 45
+    needleCenter.x = (rpmNeedle.w / 2) - crpmX;  // Center horizontally
+    needleCenter.y = rpmNeedle.h - crpmY;       // Set to the bottom of the needle (height)
 
     int angle = 0;  // Initial rotation angle
 
@@ -73,10 +83,10 @@ int main(int argc, char* argv[]) {
         Uint32 buttons = SDL_GetMouseState(&mouseX, &mouseY);
 
         // Print mouse position (for debugging purposes)
-        std::cout << "Mouse Position: (" << mouseX << ", " << mouseY << ") \n";
+       // std::cout << "Mouse Position: (" << mouseX << ", " << mouseY << ") \n";
 
 
-        std::this_thread::sleep_for(50ms); // For debugging purposes
+        std::this_thread::sleep_for(5ms); // For debugging purposes
 
         // Clear the screen
         SDL_RenderClear(renderer);
@@ -91,10 +101,8 @@ int main(int argc, char* argv[]) {
         SDL_RenderPresent(renderer);
 
         // Increment the angle (for testing rotation)
-        angle += 1;
-        if (angle >= 360) {
-            angle = 0;
-        }
+        angle+=1;
+       
     }
 
     // Cleanup
