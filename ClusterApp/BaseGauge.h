@@ -26,6 +26,10 @@ public:
 		return needle.get_texture();
 	}
 
+	int lower_bound = 0;
+	int upper_bound = 0;
+	int current_val = 0;
+
 	void test_needle(int val = 1) {
 		static bool dec = false;
 		if (needle.angle > 240)
