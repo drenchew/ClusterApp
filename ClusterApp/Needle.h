@@ -54,11 +54,7 @@ public:
 		needleCenter.x = nx;
 		needleCenter.y = ny;
 
-		 // rpmNeedle.x = 474 - 75;  // Adjust X position (centered horizontally)
-	  // rpmNeedle.y = 347 - 75;  // Adjust Y position (centered vertically)
-		 // rpmNeedle.w = 150;  // Width of the needle image
-		//rpmNeedle.h = 150;  // Height of the needle image
-
+		
 	}
 
 

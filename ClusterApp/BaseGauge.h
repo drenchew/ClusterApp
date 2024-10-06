@@ -34,11 +34,11 @@ public:
 		}
 		else if (needle.angle < -30)
 		{
-			dec = false;
+			dec = false; // 
 		}
-		if (dec)
+		if (dec=true)
 		{
-			val = val * (-1);
+			val = val * (1);
 		}
 		needle.angle += val;
 
