@@ -159,6 +159,7 @@
     <ClInclude Include="BaseGauge.h" />
     <ClInclude Include="Cluster.h" />
     <ClInclude Include="ClusterApp.h" />
+    <ClInclude Include="Defines.h" />
     <ClInclude Include="FuelGauge.h" />
     <ClInclude Include="Needle.h" />
     <ClInclude Include="Rpms.h" />

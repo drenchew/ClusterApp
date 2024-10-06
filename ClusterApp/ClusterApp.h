@@ -8,8 +8,13 @@
 #include <cstdio>
 #include <stdexcept>
 #include<array>
+#include<vector>
+#include <thread>
+
 
 #include"BaseGauge.h"
+
+using namespace std::chrono_literals;
 
 constexpr int WINDOW_H = 520;
 constexpr int WINDOW_W = 1024;
@@ -18,9 +23,22 @@ class ClusterApp {
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 
-	std::array<BaseGauge,> gauges;
+	SDL_Texture* _interior;
 
-	ClusterApp(): window(nullptr), renderer(nullptr){}
+	SDL_Texture* _road;
+
+	std::vector<BaseGauge> gauges;
+	bool running = false;
+
+public:
+	ClusterApp(): _interior(nullptr),window(nullptr), renderer(nullptr){
+		gauges.reserve(NUM_OF_NEEDLES);
+
+		init();
+
+		loop();
+
+	}
 
 	void init() {
 		if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -34,17 +52,95 @@ class ClusterApp {
 		}
 
 
-		SDL_Window* window = SDL_CreateWindow("Car Cluster", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_W, WINDOW_H, SDL_WINDOW_SHOWN);
-		SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+		 window = SDL_CreateWindow("Car Cluster", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_W, WINDOW_H, SDL_WINDOW_SHOWN);
+		 renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
+		
+
+		_interior= IMG_LoadTexture(renderer, INTERIOR_PATH);
+
+		_road = IMG_LoadTexture(renderer,ROADR_PATH);
+
+		init_gauges();
+		
 
 	}
 
+	void init_gauges()
+	{
+		//gauges.emplace_back(window,renderer);
 
-	void clear() {
 
+		for (size_t i = 0; i < NUM_OF_NEEDLES; i++)
+		{
+			gauges.emplace_back(window, renderer);
+		}
+
+		//RPM GAUGE 
+		gauges[Gauges::RPMS].needle.set_position(RPM_X, RPM_Y, RPM_H, RPM_W, RPM_NX, RPM_NY);
+
+
+	}
+
+	void loop() {
+		running = true;
+		SDL_Event event;
+
+		while (running) {
+			while (SDL_PollEvent(&event)) {
+				if (event.type == SDL_QUIT) {
+					running = false;
+				}
+			}
+
+			update();
+
+		}
+
+		kill();
+	}
+
+	void kill() {
+		for (auto& gauge : gauges)
+		{
+			gauge.kill();
+		}
+
+		SDL_DestroyRenderer(renderer);
+		SDL_DestroyWindow(window);
+		IMG_Quit();
+		SDL_Quit();
 	}
 
 	void update() {
+		// Clear the screen
+		SDL_RenderClear(renderer);
+
+		std::this_thread::sleep_for(5ms); // For debugging purposes
+
+		// Render the cluster background
+		SDL_RenderCopy(renderer, _road, NULL, NULL);
+		SDL_RenderCopy(renderer, _interior, NULL, NULL);
+		
+
+
+		for (auto& gauge : gauges)
+		{
+			gauge.render(renderer);
+			gauge.test_needle();
+		}
+
+		// Render the rotating needle with the specified center of rotation
+		
+		/*SDL_RenderCopyEx(renderer, gauges[Gauges::RPMS].get_texture(), NULL,
+			&gauges[Gauges::RPMS].get_rect(),
+			gauges[Gauges::RPMS].get_angle(),
+			gauges[Gauges::RPMS].get_center_p(),
+			SDL_FLIP_NONE);
+		*/
+
+		// Present the updated renderer
+		SDL_RenderPresent(renderer);
 
 	}
 

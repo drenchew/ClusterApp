@@ -47,5 +47,8 @@
     <ClInclude Include="BaseGauge.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Defines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
