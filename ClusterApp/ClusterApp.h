@@ -10,9 +10,11 @@
 #include<array>
 #include<vector>
 #include <thread>
-
+#include<memory>
 
 #include"BaseGauge.h"
+#include"FuelGauge.h"
+
 
 using namespace std::chrono_literals;
 
@@ -27,7 +29,7 @@ class ClusterApp {
 
 	SDL_Texture* _road;
 
-	std::vector<BaseGauge> gauges;
+	std::vector<std::shared_ptr<BaseGauge>> gauges;
 	bool running = false;
 
 public:
@@ -71,16 +73,18 @@ public:
 
 		for (size_t i = 0; i < NUM_OF_NEEDLES; i++)
 		{
-			gauges.emplace_back(window, renderer);
+			gauges.emplace_back(std::make_shared<BaseGauge>(window, renderer));
 		}
 
+		gauges[Gauges::FUEL_LEVEL] = std::make_shared<FuelGauge>(window, renderer);
+
 		//RPM GAUGE 
-		gauges[Gauges::RPMS].needle.set_position(RPM_X, RPM_Y, RPM_H, RPM_W, RPM_NX, RPM_NY);
-		gauges[Gauges::SPEEDOMETER].needle.set_position(SPEEDOMETER_X, SPEEDOMETER_Y, SPEEDOMETER_H, SPEEDOMETER_W, SPEEDOMETER_NX, SPEEDOMETER_NY);
-		gauges[Gauges::OIL_TEMP].needle.set_position(OIL_TEMP_X, OIL_TEMP_Y, OIL_TEMP_H, OIL_TEMP_W, OIL_TEMP_NX, OIL_TEMP_NY);
-		gauges[Gauges::WATER_TEMP].needle.set_position(WATER_TEMP_X, WATER_TEMP_Y, WATER_TEMP_H, WATER_TEMP_W, WATER_TEMP_NX, WATER_TEMP_NY);
-		gauges[Gauges::FUEL_LEVEL].needle.set_position(FUEL_LEVEL_X, FUEL_LEVEL_Y, FUEL_LEVEL_H, FUEL_LEVEL_W, FUEL_LEVEL_NX, FUEL_LEVEL_NY);
-		gauges[Gauges::OIL_LEVEL].needle.set_position(OIL_LEVEL_X, OIL_LEVEL_Y, OIL_LEVEL_H, OIL_LEVEL_W, OIL_LEVEL_NX, OIL_LEVEL_NY);
+		gauges[Gauges::RPMS]->needle.set_position(RPM_X, RPM_Y, RPM_H, RPM_W, RPM_NX, RPM_NY);
+		gauges[Gauges::SPEEDOMETER]->needle.set_position(SPEEDOMETER_X, SPEEDOMETER_Y, SPEEDOMETER_H, SPEEDOMETER_W, SPEEDOMETER_NX, SPEEDOMETER_NY);
+		gauges[Gauges::OIL_TEMP]->needle.set_position(OIL_TEMP_X, OIL_TEMP_Y, OIL_TEMP_H, OIL_TEMP_W, OIL_TEMP_NX, OIL_TEMP_NY);
+		gauges[Gauges::WATER_TEMP]->needle.set_position(WATER_TEMP_X, WATER_TEMP_Y, WATER_TEMP_H, WATER_TEMP_W, WATER_TEMP_NX, WATER_TEMP_NY);
+		gauges[Gauges::FUEL_LEVEL]->needle.set_position(FUEL_LEVEL_X, FUEL_LEVEL_Y, FUEL_LEVEL_H, FUEL_LEVEL_W, FUEL_LEVEL_NX, FUEL_LEVEL_NY);
+		gauges[Gauges::OIL_LEVEL]->needle.set_position(OIL_LEVEL_X, OIL_LEVEL_Y, OIL_LEVEL_H, OIL_LEVEL_W, OIL_LEVEL_NX, OIL_LEVEL_NY);
 
 
 	}
@@ -117,7 +121,7 @@ public:
 	void kill() {
 		for (auto& gauge : gauges)
 		{
-			gauge.kill();
+			gauge->kill();
 		}
 
 		SDL_DestroyRenderer(renderer);
@@ -141,8 +145,8 @@ public:
 
 		for (auto& gauge : gauges)
 		{
-			gauge.render(renderer);
-			gauge.test_needle();
+			gauge->render(renderer);
+			gauge->test_needle();
 		}
 
 
