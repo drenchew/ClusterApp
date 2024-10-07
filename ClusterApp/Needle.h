@@ -17,6 +17,7 @@ public:
 	SDL_Point needleCenter;
 
 	int angle = 0;
+	int max_angle = 360;
 
 	Needle() = default;
 

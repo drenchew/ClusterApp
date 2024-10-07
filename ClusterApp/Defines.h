@@ -32,7 +32,7 @@ constexpr int SPEEDOMETER_NX = 90; // Same offset as RPM in X-axis  //100
 constexpr int SPEEDOMETER_NY = 30;  // Same offset as RPM in Y-axis  //30
 
 
-#define FREEZE_TIME 30ms
+#define FREEZE_TIME 100ms
 
 // OIL_TEMP Gauge
 // Mouse Position: (155, 408)

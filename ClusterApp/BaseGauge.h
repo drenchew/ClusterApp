@@ -11,10 +11,11 @@
 
 class BaseGauge {
 public:
-	 BaseGauge(SDL_Window* window, SDL_Renderer* renderer): 
+	BaseGauge(SDL_Window* window, SDL_Renderer* renderer, int start=0, int end=0) :
+		lower_bound(start), upper_bound(end),
 	  needle(window, renderer)
 	 {
-	
+		needle.angle = lower_bound;
 	 }
 	virtual void render(SDL_Renderer* renderer) {
 
@@ -26,35 +27,28 @@ public:
 		return needle.get_texture();
 	}
 
-	int lower_bound = 0;
-	int upper_bound = 0;
-	int current_val = 0;
+	int lower_bound ;
+	int upper_bound ;
+	int current_val =0;
 
-	void test_needle(int val = 1) {
-		static bool dec = false;
-		if (needle.angle > 240)
-		{
-			dec = true;
-		}
-		else if (needle.angle < -30)
-		{
-			dec = false; // 
-		}
-		if (dec=true)
-		{
-			val = val * (1);
-		}
-		needle.angle += val;
+	virtual void test_needle(int val = 1) {
+		//static int num = 0;
+		//std::cout << "here from " << num++ << std::endl;;
 
 		
 		needle.angle += val;
+	}
+
+	void test_in_range(int start , int end) {
+		
+		
 	}
 
 	SDL_Rect& get_rect() {
 		return needle.get_rect();
 	}
 	int get_angle() {
-		needle.get_angle();
+		return needle.get_angle();
 	}
 
 	SDL_Point* get_center_p() {
