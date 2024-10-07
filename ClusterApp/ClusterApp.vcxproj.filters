@@ -50,5 +50,8 @@
     <ClInclude Include="Defines.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="OilLevelGauge.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

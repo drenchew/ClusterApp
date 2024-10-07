@@ -1,8 +1,8 @@
 #pragma once
 
 
-#ifndef OIL_TEMPERATURE_H
-#define OIL_TEMPERATURE_H
+#ifndef OIL_TEMPERATURE_GAUGE_H
+#define OIL_TEMPERATURE_GAUGE_H
 
 #include"BaseGauge.h"
 
@@ -18,4 +18,4 @@ public:
 
 };
 
-#endif // !OIL_TEMPERATURE_H
+#endif // !OIL_TEMPERATURE_GAUGE_H

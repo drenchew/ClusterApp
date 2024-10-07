@@ -16,6 +16,9 @@
 #include"FuelGauge.h"
 #include"Rpms.h"
 #include"OilTemperatureGauge.h"
+#include"Speedometer.h"
+#include"WaterTempGauge.h"
+#include"OilLevelGauge.h"
 
 
 using namespace std::chrono_literals;
@@ -81,6 +84,11 @@ public:
 		gauges[Gauges::FUEL_LEVEL] = std::make_shared<FuelGauge>(window, renderer,320,215);
 		gauges[Gauges::RPMS] = std::make_shared<RPMGauge>(window, renderer, -30, 240);
 		gauges[Gauges::OIL_TEMP] = std::make_shared<OilTempGauge>(window, renderer, 20, 130);
+		gauges[Gauges::SPEEDOMETER] = std::make_shared<Speedometer>(window, renderer, -25, 137);
+		gauges[Gauges::WATER_TEMP] = std::make_shared<WaterTempGauge>(window, renderer, 360, 220);
+		gauges[Gauges::OIL_LEVEL] = std::make_shared<OilLevelGauge>(window, renderer, 98, 210);
+
+	
 
 		//RPM GAUGE 
 		gauges[Gauges::RPMS]->needle.set_position(RPM_X, RPM_Y, RPM_H, RPM_W, RPM_NX, RPM_NY);
@@ -111,7 +119,7 @@ public:
 			static int mouseX, mouseY;
 			SDL_GetMouseState(&mouseX, &mouseY);
 
-			std::cout << "angle: " << gauges[Gauges::OIL_TEMP]->get_angle() << std::endl;
+			std::cout << "angle: " << gauges[Gauges::OIL_LEVEL]->get_angle() << std::endl;
 			// Print the mouse position to the console
 			//std::cout << "Mouse Position: (" << mouseX << ", " << mouseY << ")" << std::endl;
 

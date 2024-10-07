@@ -162,6 +162,7 @@
     <ClInclude Include="Defines.h" />
     <ClInclude Include="FuelGauge.h" />
     <ClInclude Include="Needle.h" />
+    <ClInclude Include="OilLevelGauge.h" />
     <ClInclude Include="Rpms.h" />
     <ClInclude Include="Speedometer.h" />
     <ClInclude Include="OilTemperatureGauge.h" />
