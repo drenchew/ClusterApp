@@ -34,12 +34,11 @@ class ClusterApp {
 
 	SDL_Texture* _road;
 
-	std::vector<std::shared_ptr<BaseGauge>> gauges;
+	std::array<std::shared_ptr<BaseGauge>,NUM_OF_NEEDLES> gauges;
 	bool running = false;
 
 public:
 	ClusterApp(): _interior(nullptr),window(nullptr), renderer(nullptr){
-		gauges.reserve(NUM_OF_NEEDLES);
 
 		init();
 
@@ -75,11 +74,6 @@ public:
 
 	void init_gauges()
 	{
-
-		for (size_t i = 0; i < NUM_OF_NEEDLES; i++)
-		{
-			gauges.emplace_back(std::make_shared<BaseGauge>(window, renderer));
-		}
 
 		gauges[Gauges::FUEL_LEVEL] = std::make_shared<FuelGauge>(window, renderer,320,215);
 		gauges[Gauges::RPMS] = std::make_shared<RPMGauge>(window, renderer, -30, 240);
