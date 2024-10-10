@@ -13,7 +13,7 @@ public:
 
 	}
 	virtual void test_needle(int val = 1) override {
-		if (needle.angle <= upper_bound) { needle.angle += val; }
+		if (needle.angle <= upper_bound) { needle.angle += 1; }
 	}
 
 };

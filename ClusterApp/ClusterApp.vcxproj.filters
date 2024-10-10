@@ -53,5 +53,8 @@
     <ClInclude Include="OilLevelGauge.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Gearbox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

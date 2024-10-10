@@ -3,6 +3,9 @@
 #define DEFINES_H
 
 #include <string>
+#include<unordered_map>
+
+std::unordered_map<int,int> RpmToKmhRatio;
 
 enum Gauges {
     SPEEDOMETER,
@@ -14,7 +17,7 @@ enum Gauges {
 };
 
 // game updating rate
-#define FREEZE_TIME 30ms
+#define FREEZE_TIME 2
 
 // RPMS Gauge
 // Mouse Position: (470, 342)

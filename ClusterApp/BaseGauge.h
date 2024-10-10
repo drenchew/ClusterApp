@@ -8,6 +8,8 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
+#include<mutex>
+
 
 class BaseGauge {
 public:
@@ -19,7 +21,7 @@ public:
 	 }
 	virtual void render(SDL_Renderer* renderer) {
 
-		SDL_RenderCopyEx(renderer, needle.get_texture(), NULL, &needle.get_rect(), needle.angle, get_center_p(), SDL_FLIP_NONE);
+		SDL_RenderCopyEx(renderer, needle.get_texture(), NULL, &needle.get_rect(), needle.angle, needle.get_center_point(), SDL_FLIP_NONE);
 
 	}
 	SDL_Texture* get_texture()
@@ -32,11 +34,19 @@ public:
 	int current_val =0;
 
 	virtual void test_needle(int val = 1) {
-		//static int num = 0;
-		//std::cout << "here from " << num++ << std::endl;;
-
-		
 		needle.angle += val;
+	}
+
+	virtual void update_needle(const int val) {
+		//use mutex here
+		
+		int new_val = needle.angle + val;
+		if (new_val < upper_bound && new_val>lower_bound)
+		{
+			needle.angle = new_val;
+		}
+		printf(" the angle: %d\n", needle.angle);
+		
 	}
 
 	void test_in_range(int start , int end) {
@@ -51,9 +61,7 @@ public:
 		return needle.get_angle();
 	}
 
-	SDL_Point* get_center_p() {
-		return needle.get_center_point();
-	}
+	
 	virtual void kill() {
 		SDL_DestroyTexture(needle.get_texture());
 		

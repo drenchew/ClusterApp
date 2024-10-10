@@ -30,7 +30,7 @@ public:
 		return &needleCenter;
 	}
 
-	Needle(SDL_Window* window,SDL_Renderer* renderer)
+	Needle(SDL_Window* window,SDL_Renderer* renderer) : rect{0,0,0,0,}, needleCenter{0,0}
 	{
 		// Load a PNG image into a texture
 		 _image = IMG_LoadTexture(renderer, NEEDLE_PATH);

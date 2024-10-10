@@ -20,6 +20,8 @@
 #include"WaterTempGauge.h"
 #include"OilLevelGauge.h"
 
+#include"Gearbox.h"
+
 
 using namespace std::chrono_literals;
 
@@ -95,9 +97,32 @@ public:
 
 	}
 
-	void sleep_for()
+	void freeze_thread()
 	{
-		std::this_thread::sleep_for(FREEZE_TIME); // For debugging purposes
+		//std::this_thread::sleep_for(FREEZE_TIME); // For debugging purposes
+		SDL_Delay(FREEZE_TIME);
+	}
+
+	void proccess_event(SDL_Event& event) {
+		
+
+		while (SDL_PollEvent(&event)) {
+
+			if (event.type == SDL_QUIT) {
+				running = false;
+			}
+
+			switch (event.key.keysym.sym)
+			{
+			case SDLK_w: gauges[Gauges::RPMS]->update_needle(2);
+				gauges[Gauges::SPEEDOMETER]->update_needle(2);
+				break;
+			case SDLK_s: gauges[Gauges::RPMS]->update_needle(-2);
+				gauges[Gauges::SPEEDOMETER]->update_needle(-2);
+				break;
+			}
+
+		}
 	}
 
 	void loop() {
@@ -105,21 +130,18 @@ public:
 		SDL_Event event;
 
 		while (running) {
-			while (SDL_PollEvent(&event)) {
-				if (event.type == SDL_QUIT) {
-					running = false;
-				}
-			}
+			
+			proccess_event(event);
+
 			static int mouseX, mouseY;
 			SDL_GetMouseState(&mouseX, &mouseY);
 
-			std::cout << "angle: " << gauges[Gauges::OIL_LEVEL]->get_angle() << std::endl;
+			//std::cout << "angle: " << gauges[Gauges::OIL_LEVEL]->get_angle() << std::endl;
 			// Print the mouse position to the console
 			//std::cout << "Mouse Position: (" << mouseX << ", " << mouseY << ")" << std::endl;
 
 
 			update();
-
 		}
 
 		kill();
@@ -141,11 +163,11 @@ public:
 		// Clear the screen
 		SDL_RenderClear(renderer);
 
-		sleep_for();
+		freeze_thread();
 		
 
 		// Render the cluster background
-		SDL_RenderCopy(renderer, _road, NULL, NULL);
+		//SDL_RenderCopy(renderer, _road, NULL, NULL);
 		SDL_RenderCopy(renderer, _interior, NULL, NULL);
 		
 
@@ -153,7 +175,8 @@ public:
 		for (auto& gauge : gauges)
 		{
 			gauge->render(renderer);
-			gauge->test_needle();
+			
+			//gauge->test_needle();
 		}
 
 
