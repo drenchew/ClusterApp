@@ -91,6 +91,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>D:\SDL2VC\SDL-Image\SDL2_image-2.8.2\include;D:\SDL2VC\SDL-Text\SDL2_ttf-devel-2.22.0-VC\SDL2_ttf-2.22.0\include;D:\SDL2VC\SDL2-devel-2.30.8-VC\SDL2-2.30.8\include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

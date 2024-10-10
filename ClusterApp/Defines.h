@@ -19,6 +19,10 @@ enum Gauges {
 // game updating rate
 #define FREEZE_TIME 2
 
+
+constexpr int WINDOW_H = 520;
+constexpr int WINDOW_W = 1024;
+
 // RPMS Gauge
 // Mouse Position: (470, 342)
 constexpr int RPM_X = 359;
