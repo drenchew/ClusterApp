@@ -4,7 +4,7 @@
 
 #include"BaseGauge.h"
 
-class FuelGauge : public BaseGauge{
+class FuelGauge final: public BaseGauge{
 public:
 
 	FuelGauge(SDL_Window* window, SDL_Renderer* renderer,int start,int end):
@@ -16,6 +16,10 @@ public:
 	virtual void test_needle(int val = 1) override {
 		//test_in_range(lower_bound, upper_bound);
 		if (needle.angle > upper_bound) { needle.angle -= val; }
+	}
+
+	virtual void update_needle(float value, float min_val, float max_val) override final{
+
 	}
 
 	double fuel_left = 0;

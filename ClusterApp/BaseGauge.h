@@ -14,6 +14,7 @@ public:
     std::mutex mtx; 
 
     BaseGauge() = delete;
+    virtual ~BaseGauge() = default;
 
     BaseGauge(SDL_Window* window, SDL_Renderer* renderer, int start = 0, int end = 0) :
         lower_bound(start), upper_bound(end),
@@ -44,14 +45,14 @@ public:
         if (new_angle >= lower_bound && new_angle <= upper_bound) {
             needle.angle = static_cast<int>(new_angle);
         }
-        printf("Updated Needle: angle = %d\n", needle.angle);
+        printf("angle = %d\n", needle.angle);
     }
 
  
     float map_value_to_angle(float value, float min_val, float max_val) {
         value = std::clamp(value, min_val, max_val);
 
-        return lower_bound + (value - min_val) * (upper_bound - lower_bound) / (max_val - min_val);
+        return lower_bound + (value - min_val) * (upper_bound - lower_bound) / (max_val - min_val) - 10;
     }
 
 
@@ -63,7 +64,7 @@ public:
         SDL_DestroyTexture(needle.get_texture());
     }
 
-    virtual ~BaseGauge() = default;
+   
 
     float value = 0;
 

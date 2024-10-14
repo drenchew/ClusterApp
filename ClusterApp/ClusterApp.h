@@ -19,7 +19,7 @@
 #include "Speedometer.h"
 #include "WaterTempGauge.h"
 #include "OilLevelGauge.h"
-#include "Gearbox.h"  // Include Gearbox header
+#include "Gearbox.h"
 
 using namespace std::chrono_literals;
 
@@ -34,7 +34,7 @@ class ClusterApp {
     std::array<std::shared_ptr<BaseGauge>, NUM_OF_NEEDLES> gauges;
     bool running = false;
 
-    std::unique_ptr<Gearbox> gearbox;  // Unique pointer to the gearbox
+    std::unique_ptr<Gearbox> gearbox; 
 
 public:
     ClusterApp() : _interior(nullptr), window(nullptr), renderer(nullptr) {
@@ -103,15 +103,19 @@ public:
                 switch (event.key.keysym.sym) {
                 case SDLK_w:
                     accelerate = true;
-                    std::cout << "Accelerating\n";
                     break;
                 case SDLK_s:
                     brake = true;
-                    std::cout << "Braking\n";
-
                     break;
                 }
                 gearbox->handle_input(accelerate, brake);
+                float rpms=gearbox->get_rpms();
+
+                gauges[Gauges::RPMS]->update_needle(gearbox->get_rpms(), MIN_RPMS, MAX_RPMS);
+                gauges[Gauges::SPEEDOMETER]->update_needle(gearbox->ispeedometer->get_speed(), 0.0f, 350.0f);
+               
+                
+
             }
 
             // Handle key up events
@@ -162,8 +166,10 @@ public:
 
         freeze_thread();
 
+        SDL_RenderCopy(renderer, this->_road, NULL, NULL);
         // Render the cluster background
         SDL_RenderCopy(renderer, _interior, NULL, NULL);
+  
 
         for (auto& gauge : gauges) {
             gauge->render(renderer);

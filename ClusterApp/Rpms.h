@@ -7,6 +7,7 @@
 
 class RPMGauge : public BaseGauge {
 public:
+    float rpms = 0;
     RPMGauge(SDL_Window* window, SDL_Renderer* renderer, int start, int end) :
         BaseGauge(window, renderer, start, end) {}
 
@@ -28,7 +29,7 @@ public:
             needle.angle = static_cast<int>(new_angle);
         }
 
-        printf("RPM Needle Updated: RPM = %.2f, Angle = %d\n", rpm, needle.angle);
+        printf("RPM = %.2f, Angle = %d\n", rpm, needle.angle);
     }
 };
 

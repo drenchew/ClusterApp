@@ -5,8 +5,28 @@
 
 #include "BaseGauge.h"
 
-class Speedometer : public BaseGauge {
+class ISpeedometer {
+protected:
+    float speed = 0;
 public:
+    
+    virtual float get_speed() const  = 0;
+    virtual void set_speed(float val)  = 0;
+
+    virtual ~ISpeedometer() = default;
+
+};
+
+class Speedometer : public ISpeedometer, public BaseGauge {
+public:
+    virtual float get_speed() const override final  {
+        return speed;
+    }
+
+    virtual void set_speed(float val) override{
+        this->speed = val;
+    }
+
     Speedometer(SDL_Window* window, SDL_Renderer* renderer, int start, int end) :
         BaseGauge(window, renderer, start, end) {
     }
@@ -29,7 +49,7 @@ public:
             needle.angle = static_cast<int>(new_angle);
         }
 
-        printf("Updated Speedometer Needle: angle = %d\n", needle.angle);
+        printf("Speedometer = %.2f, Angle = %d\n", speed, needle.angle);
     }
 
     //  For testing purposes
@@ -39,5 +59,8 @@ public:
         }
     }
 };
+
+
+
 
 #endif // !SPEEDOMETER_GAUGE_H

@@ -25,6 +25,9 @@ constexpr int WINDOW_W = 1024;
 
 // RPMS Gauge
 // Mouse Position: (470, 342)
+constexpr int MIN_RPMS = 800;   // Idle RPM
+constexpr int MAX_RPMS = 8000;  // Redline RPM
+
 constexpr int RPM_X = 359;
 constexpr int RPM_Y = 307;
 constexpr int RPM_W = 80;
@@ -86,6 +89,6 @@ constexpr short NUM_OF_NEEDLES = 6;
 // File paths
 constexpr const char NEEDLE_PATH[] = ".\\assets\\needle2.png";
 constexpr const char INTERIOR_PATH[] = ".\\assets\\cluster4.png";
-constexpr const char ROADR_PATH[] = ".\\assets\\road.jpeg";
+constexpr const char ROADR_PATH[] = ".\\assets\\road5.png";
 
 #endif // !DEFINES_H
