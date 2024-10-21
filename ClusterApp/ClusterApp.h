@@ -70,11 +70,10 @@ public:
         gauges[Gauges::OIL_TEMP] = std::make_shared<OilTempGauge>(window, renderer, 20, 130);
         gauges[Gauges::SPEEDOMETER] = std::make_shared<Speedometer>(window, renderer, -25, 137);
         gauges[Gauges::WATER_TEMP] = std::make_shared<WaterTempGauge>(window, renderer, 360, 220);
-        gauges[Gauges::OIL_LEVEL] = std::make_shared<OilLevelGauge>(window, renderer, 98, 210);
+        gauges[Gauges::OIL_LEVEL] = std::make_shared<OilLevelGauge>(window, renderer, 210, 98);// 98 , 210
 
 
 
-        //RPM GAUGE 
         gauges[Gauges::RPMS]->needle.set_position(RPM_X, RPM_Y, RPM_H, RPM_W, RPM_NX, RPM_NY);
         gauges[Gauges::SPEEDOMETER]->needle.set_position(SPEEDOMETER_X, SPEEDOMETER_Y, SPEEDOMETER_H, SPEEDOMETER_W, SPEEDOMETER_NX, SPEEDOMETER_NY);
         gauges[Gauges::OIL_TEMP]->needle.set_position(OIL_TEMP_X, OIL_TEMP_Y, OIL_TEMP_H, OIL_TEMP_W, OIL_TEMP_NX, OIL_TEMP_NY);
@@ -82,8 +81,32 @@ public:
         gauges[Gauges::FUEL_LEVEL]->needle.set_position(FUEL_LEVEL_X, FUEL_LEVEL_Y, FUEL_LEVEL_H, FUEL_LEVEL_W, FUEL_LEVEL_NX, FUEL_LEVEL_NY);
         gauges[Gauges::OIL_LEVEL]->needle.set_position(OIL_LEVEL_X, OIL_LEVEL_Y, OIL_LEVEL_H, OIL_LEVEL_W, OIL_LEVEL_NX, OIL_LEVEL_NY);
 
+        std::thread fuel_thread(&ClusterApp::update_fuel_gauge, this, 2.0f, 0.0f, 350.0f);
+        std::thread oilLevel_thread(&ClusterApp::update_oilLevel_gauge, this, 2.0f, 0.0f, 130);
+        std::thread oilTemp_thread(&ClusterApp::update_oilLevel_gauge, this, 2.0f, 0.0f, 280);
+
+
+        oilTemp_thread.detach();
+        oilLevel_thread.detach();
+        fuel_thread.detach();
+       
 
     }
+
+    void update_fuel_gauge(float value, float min_val, float max_val) {
+     
+            gauges[Gauges::FUEL_LEVEL]->update_needle(value, min_val, max_val);
+    }
+
+    void update_oilTemp_gauge(float value, float min_val, float max_val) {
+
+        gauges[Gauges::WATER_TEMP]->update_needle(value, min_val, max_val);
+    }
+
+    void update_oilLevel_gauge(float value, float min_val, float max_val) {
+        gauges[Gauges::OIL_LEVEL]->update_needle(value, min_val, max_val);
+    }
+
 
     void freeze_thread() {
         SDL_Delay(FREEZE_TIME);
@@ -174,6 +197,9 @@ public:
         for (auto& gauge : gauges) {
             gauge->render(renderer);
         }
+      
+
+
 
         // Present the updated renderer
         SDL_RenderPresent(renderer);

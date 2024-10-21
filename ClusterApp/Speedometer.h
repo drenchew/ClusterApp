@@ -49,7 +49,7 @@ public:
             needle.angle = static_cast<int>(new_angle);
         }
 
-        printf("Speedometer = %.2f, Angle = %d\n", speed, needle.angle);
+        printf("Speedometer = %.3f, Angle = %d\n", speed, needle.angle);
     }
 
     //  For testing purposes

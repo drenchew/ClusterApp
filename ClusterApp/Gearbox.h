@@ -19,7 +19,7 @@ public:
 
     // Gear ratios
    // std::array<float, 6> gearRatios = { 0.3f, 0.5, 0.8f, 1.2f, 1.4f, 0.07f };
-    std::array<float, 6> gearRatios = { 0.3f, 0.5, 0.8f, 1.2f, 1.1f, 1.7f };
+    std::array<float, 6> gearRatios = { 0.3f, 0.5, 0.8f, 1.2f,1.8f,2.0f };
 
     ISpeedometer* ispeedometer = NULL;
    
