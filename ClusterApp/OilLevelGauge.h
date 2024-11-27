@@ -16,14 +16,14 @@ public:
 	virtual void update_needle(float value, float min_val, float max_val) override final {
 		using namespace std::chrono_literals;
 		//std::lock_guard<std::mutex> a(mtx);
-		printf("Oil Level Angle %d:\n ", needle.angle);
+		
 		while (needle.angle < max_val && needle.angle > 140)
 		{
 			needle.angle -= value;
 			std::this_thread::sleep_for(80ms);
 
 		}
-		//printf("Oil Level Angle%d:\n ", needle.angle);
+
 	}
 
 	virtual void test_needle(int val = 1) override {

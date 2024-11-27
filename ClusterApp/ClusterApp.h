@@ -113,10 +113,14 @@ public:
     }
 
     void process_event(SDL_Event& event) {
-        bool accelerate = false;
-        bool brake = false;
+        static  bool accelerate = false;
+        static bool brake = false;
+        static bool engineBrake = false;
+        
 
         while (SDL_PollEvent(&event)) {
+            
+
             if (event.type == SDL_QUIT) {
                 running = false;
             }
@@ -126,33 +130,41 @@ public:
                 switch (event.key.keysym.sym) {
                 case SDLK_w:
                     accelerate = true;
+                    engineBrake = false;
                     break;
                 case SDLK_s:
                     brake = true;
+                    engineBrake = false;
                     break;
-                }
-                gearbox->handle_input(accelerate, brake);
-                float rpms=gearbox->get_rpms();
 
-                gauges[Gauges::RPMS]->update_needle(gearbox->get_rpms(), MIN_RPMS, MAX_RPMS);
-                gauges[Gauges::SPEEDOMETER]->update_needle(gearbox->ispeedometer->get_speed(), 0.0f, 350.0f);
-               
-                
+                }             
 
             }
-
-            // Handle key up events
+           
             if (event.type == SDL_KEYUP) {
                 switch (event.key.keysym.sym) {
                 case SDLK_w:
+					engineBrake = true;
                     accelerate = false;
                     break;
                 case SDLK_s:
+					engineBrake = true;
                     brake = false;
                     break;
                 }
+
+               
             }
+         
+
         }
+
+        gearbox->handle_input(accelerate, brake, engineBrake);
+        float rpms = gearbox->get_rpms();
+
+        gauges[Gauges::RPMS]->update_needle(gearbox->get_rpms(), MIN_RPMS, MAX_RPMS);
+        gauges[Gauges::SPEEDOMETER]->update_needle(gearbox->ispeedometer->get_speed(), 0.0f, 350.0f);
+
     }
 
 
@@ -162,9 +174,6 @@ public:
 
         while (running) {
             process_event(event);
-
-            static int mouseX, mouseY;
-            SDL_GetMouseState(&mouseX, &mouseY);
 
             update();
         }
@@ -184,13 +193,13 @@ public:
     }
 
     void update() {
-        // Clear the screen
+
         SDL_RenderClear(renderer);
 
         freeze_thread();
 
         SDL_RenderCopy(renderer, this->_road, NULL, NULL);
-        // Render the cluster background
+
         SDL_RenderCopy(renderer, _interior, NULL, NULL);
   
 
@@ -199,9 +208,6 @@ public:
         }
       
 
-
-
-        // Present the updated renderer
         SDL_RenderPresent(renderer);
     }
 };

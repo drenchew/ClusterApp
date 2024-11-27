@@ -9,17 +9,18 @@
 #include <algorithm>   
 
 #include "Defines.h"
+const int maxGear = 5;
 
 class Gearbox {
 public:
     int currentGear = 1;
-    const int maxGear = 6;
+ 
 
     const float shiftDownRpm = 3000;
 
     // Gear ratios
    // std::array<float, 6> gearRatios = { 0.3f, 0.5, 0.8f, 1.2f, 1.4f, 0.07f };
-    std::array<float, 6> gearRatios = { 0.3f, 0.5, 0.8f, 1.2f,1.8f,2.0f };
+    std::array<float, maxGear> gearRatios = { 0.3f, 0.5f, 0.8f, 1.2f,1.8f };
 
     ISpeedometer* ispeedometer = NULL;
    
@@ -44,14 +45,36 @@ public:
         }
     }
 
+    void engine_brake() {
+		std::cout << "Engine Braking\n";
+		float currSpeed = ispeedometer->get_speed();
+        if (currSpeed < 100.0f)
+        {
+            rpm -= 0.2f;
+        }
+        else {
+			rpm -= 1;
+        }
 
-    void handle_input(bool accelerate, bool brake) {
+		rpm = std::max(rpm, static_cast<float>(MIN_RPMS));
+
+        if (rpm < shiftDownRpm && currentGear > 1) {
+            shift_down();
+        }
+
+		this->ispeedometer->set_speed(rpm_to_speed(rpm, currentGear));
+    }
+
+    void handle_input(bool accelerate, bool brake,bool enBrake) {
 
         
 
         printf("*---------------------------------*\n");
         if (accelerate) {
             accelerate_car();
+        }
+        else if (enBrake) {
+			engine_brake();
         }
         if (brake) {
             decelerate_car();
@@ -60,27 +83,60 @@ public:
        // update_gauges();
     }
 
+
     void accelerate_car() {
 
         std::cout << "Accelerating\n";
        
-        rpm += 150.0f;  // Simulate throttle input
-
-        // If RPM exceeds max, shift up
+		 float curr_speed = ispeedometer->get_speed();
+		 if (curr_speed < 100.0f)
+		 {
+			 rpm += 50;
+		 }
+		 else if (curr_speed > 200.0f)
+		 {
+			 rpm += 4;
+		 }
+         else if (curr_speed > 150.0f && curr_speed < 200)
+         {
+			 rpm += 15;
+         }
+		 else {
+			 rpm += 20;
+		 }
+   
         if (rpm > MAX_RPMS && currentGear < maxGear) {
             shift_up();
         }
 
-        // Cap the RPM at max RPM
         rpm = std::min(rpm, static_cast<float>(MAX_RPMS));
 
-        // Calculate speed based on gear ratio and RPM
         this->ispeedometer->set_speed(rpm_to_speed(rpm, currentGear));
     }
 
     void decelerate_car() {
+        
+        
+        if ((rpm - 15 < MIN_RPMS)) {
+           
+            return;
+        }
         std::cout << "Braking\n";
-        rpm -= 300.0f;
+
+		float currSpeed = ispeedometer->get_speed();
+		if (currSpeed < 100.0f)
+		{
+            rpm -= 15;
+		}
+        else if(currSpeed > 200.0f)
+		{
+            rpm -= 5;
+		}
+		else {
+			rpm -= 10;
+		}
+
+
 
 
         rpm = std::max(rpm, static_cast<float>(MIN_RPMS));
@@ -92,7 +148,7 @@ public:
         }
 
         this->ispeedometer->set_speed(rpm_to_speed(rpm, currentGear));
-        //speed = rpm_to_speed(rpm, currentGear);
+
     }
 
 
@@ -107,7 +163,7 @@ public:
         if (currentGear < maxGear) {
             currentGear++;
             printf("Shifting up to gear: %d\n", currentGear);
-            // When shifting up lower the RPM proportionally
+           
             rpm = std::max(rpm / 1.5f, static_cast<float>(MIN_RPMS));
         }
     }

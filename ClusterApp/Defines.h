@@ -17,7 +17,7 @@ enum Gauges {
 };
 
 // game updating rate
-#define FREEZE_TIME 2
+#define FREEZE_TIME 5
 
 
 constexpr int WINDOW_H = 520;
