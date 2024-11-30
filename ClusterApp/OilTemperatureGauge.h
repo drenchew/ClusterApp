@@ -16,11 +16,11 @@ public:
 	virtual void update_needle(float value, float min_val, float max_val) override final {
 		using namespace std::chrono_literals;
 		
-		while (1) //needle.angle <70
+		while (needle.angle < 70) 
 		{
 			needle.angle += 1;
-			std::this_thread::sleep_for(80ms);
-			//printf("Oiltem %d:\n ", needle.angle);
+			std::this_thread::sleep_for(100ms);
+			printf("Oiltem %d:\n ", needle.angle);
 		}
 		
 	}

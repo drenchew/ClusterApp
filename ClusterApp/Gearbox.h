@@ -46,7 +46,7 @@ public:
     }
 
     void engine_brake() {
-		std::cout << "Engine Braking\n";
+	//	std::cout << "Engine Braking\n";
 		float currSpeed = ispeedometer->get_speed();
         if (currSpeed < 100.0f)
         {
@@ -67,9 +67,7 @@ public:
 
     void handle_input(bool accelerate, bool brake,bool enBrake) {
 
-        
-
-        printf("*---------------------------------*\n");
+       // printf("*---------------------------------*\n");
         if (accelerate) {
             accelerate_car();
         }
@@ -79,30 +77,28 @@ public:
         if (brake) {
             decelerate_car();
         }
-
-       // update_gauges();
     }
 
 
     void accelerate_car() {
 
-        std::cout << "Accelerating\n";
+       // std::cout << "Accelerating\n";
        
 		 float curr_speed = ispeedometer->get_speed();
-		 if (curr_speed < 100.0f)
+		 if (curr_speed <= 100.0f)
 		 {
-			 rpm += 50;
+			 rpm += 40;
 		 }
-		 else if (curr_speed > 200.0f)
+         else if (curr_speed >100 && curr_speed<=150)
 		 {
-			 rpm += 4;
-		 }
-         else if (curr_speed > 150.0f && curr_speed < 200)
-         {
 			 rpm += 15;
+		 }
+         else if (curr_speed > 150.0f && curr_speed <= 200)
+         {
+			 rpm += 5;
          }
 		 else {
-			 rpm += 20;
+			 rpm += 2.5;
 		 }
    
         if (rpm > MAX_RPMS && currentGear < maxGear) {
@@ -121,7 +117,7 @@ public:
            
             return;
         }
-        std::cout << "Braking\n";
+      //  std::cout << "Braking\n";
 
 		float currSpeed = ispeedometer->get_speed();
 		if (currSpeed < 100.0f)

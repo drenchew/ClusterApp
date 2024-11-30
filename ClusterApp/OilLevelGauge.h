@@ -17,11 +17,11 @@ public:
 		using namespace std::chrono_literals;
 		//std::lock_guard<std::mutex> a(mtx);
 		
-		while (needle.angle < max_val && needle.angle > 140)
+		while (needle.angle >140)
 		{
-			needle.angle -= value;
-			std::this_thread::sleep_for(80ms);
-
+			needle.angle -= 1;
+			std::this_thread::sleep_for(100ms);
+			std::cout << "Oil Level: " << needle.angle << std::endl;
 		}
 
 	}

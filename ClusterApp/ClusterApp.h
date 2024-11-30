@@ -81,27 +81,34 @@ public:
         gauges[Gauges::FUEL_LEVEL]->needle.set_position(FUEL_LEVEL_X, FUEL_LEVEL_Y, FUEL_LEVEL_H, FUEL_LEVEL_W, FUEL_LEVEL_NX, FUEL_LEVEL_NY);
         gauges[Gauges::OIL_LEVEL]->needle.set_position(OIL_LEVEL_X, OIL_LEVEL_Y, OIL_LEVEL_H, OIL_LEVEL_W, OIL_LEVEL_NX, OIL_LEVEL_NY);
 
-        std::thread fuel_thread(&ClusterApp::update_fuel_gauge, this, 2.0f, 0.0f, 350.0f);
-        std::thread oilLevel_thread(&ClusterApp::update_oilLevel_gauge, this, 2.0f, 0.0f, 130);
-        std::thread oilTemp_thread(&ClusterApp::update_oilLevel_gauge, this, 2.0f, 0.0f, 280);
+
+		std::thread fuel_thread(&ClusterApp::update_fuel_gauge, this, 2.0f, 0.0f, 350.0f);
+		std::thread oilLevel_thread(&ClusterApp::update_oilLevel_gauge, this, 2.0f, 0.0f, 130);
+		std::thread oilTemp_thread(&ClusterApp::update_oilTemp_gauge, this, 2.0f, 0.0f, 280);
+		std::thread waterTemp_thread(&ClusterApp::update_waterTemp_gauge, this, 2.0f, 0.0f, 130);
 
 
         oilTemp_thread.detach();
         oilLevel_thread.detach();
         fuel_thread.detach();
+		waterTemp_thread.detach();
        
 
     }
 
     void update_fuel_gauge(float value, float min_val, float max_val) {
      
-            gauges[Gauges::FUEL_LEVEL]->update_needle(value, min_val, max_val);
+       gauges[Gauges::FUEL_LEVEL]->update_needle(value, min_val, max_val);
     }
 
     void update_oilTemp_gauge(float value, float min_val, float max_val) {
 
         gauges[Gauges::WATER_TEMP]->update_needle(value, min_val, max_val);
     }
+	void update_waterTemp_gauge(float value, float min_val, float max_val) {
+
+		gauges[Gauges::OIL_TEMP]->update_needle(value, min_val, max_val);
+	}
 
     void update_oilLevel_gauge(float value, float min_val, float max_val) {
         gauges[Gauges::OIL_LEVEL]->update_needle(value, min_val, max_val);
@@ -151,11 +158,15 @@ public:
 					engineBrake = true;
                     brake = false;
                     break;
+                case SDL_KeyCode::SDLK_LSHIFT:
+					gearbox->shift_up();
+					break;
+				case SDL_KeyCode::SDLK_LCTRL:
+					gearbox->shift_down();
                 }
 
                
             }
-         
 
         }
 

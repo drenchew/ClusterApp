@@ -29,7 +29,8 @@ public:
             needle.angle = static_cast<int>(new_angle);
         }
 
-        printf("RPM = %.2f, Angle = %d\n", rpm, needle.angle);
+     
+
     }
 };
 

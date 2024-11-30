@@ -36,20 +36,13 @@ public:
         std::lock_guard<std::mutex> lock(mtx); 
 
       
-        float new_angle = map_value_to_angle(speed, min_val, max_val);
+            float new_angle = map_value_to_angle(speed, min_val, max_val);
 
-       
-        if (new_angle < lower_bound) {
-            needle.angle = lower_bound; 
-        }
-        else if (new_angle > upper_bound) {
-            needle.angle = upper_bound;
-        }
-        else {
-            needle.angle = static_cast<int>(new_angle);
-        }
+            needle.angle = static_cast<int>(std::clamp(new_angle, static_cast<float>(lower_bound), static_cast<float>(upper_bound)));
 
-        printf("Speedometer = %.3f, Angle = %d\n", speed, needle.angle);
+         //   printf("Speedometer = %.3f, Angle = %d\n", speed, needle.angle);
+        
+
     }
 
     //  For testing purposes

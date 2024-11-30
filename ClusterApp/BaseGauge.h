@@ -52,7 +52,7 @@ public:
     float map_value_to_angle(float value, float min_val, float max_val) {
         value = std::clamp(value, min_val, max_val);
 
-        return lower_bound + (value - min_val) * (upper_bound - lower_bound) / (max_val - min_val) - 10;
+        return (lower_bound + (value - min_val) * (upper_bound - lower_bound) / (max_val - min_val) - 10)+3;
     }
 
 
